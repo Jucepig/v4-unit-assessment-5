@@ -30,7 +30,7 @@ module.exports = {
 
     const isAuthenticated = bcrypt.compareSync(password, existingUser.password)
     if(!isAuthenticated) {
-      return res.status(403).send('Incorrect Password')
+      return res.status(403).send('Incorrect password')
     }
     delete existingUser.password
     
