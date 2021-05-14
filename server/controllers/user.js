@@ -1,11 +1,11 @@
 const bcrypt = require('bcryptjs')
 module.exports = {
   register: async (req,res) => {
-    const db = app.req.get('db')
+    const db = req.app.get('db')
     const { username, password } = req.body
     const profile_pic = `https://robohash.org/${username}.png`
 
-    const [foundUser] = await db.find_user_by_username(username)
+    const [foundUser] = await db.user.find_user_by_username(username)
     if(foundUser) {
       return res.status(409).send('Username already in use')
     }
@@ -13,17 +13,17 @@ module.exports = {
     const salt = bcrypt.genSaltSync(10)
     const hashPassword = bcrypt.hashSync(password, salt)
 
-    const [newUser] = await db.create_user.sql(username, hashPassword, profile_pic)
+    const [newUser] = await db.user.create_user(username, hashPassword, profile_pic)
       delete newUser.password
     req.session.user = newUser
     res.status(200).send(req.session.user)
   },
 
   login: async (req, res) => {
-    const db = app.req.get('db')
+    const db = req.app.get('db')
     const { username, password } = req.body
 
-    const [existingUser] = await db.find_user_by_username(username)
+    const [existingUser] = await db.user.find_user_by_username(username)
     if(!existingUser){
       return res.status(401).send('Username not recognized')
     }

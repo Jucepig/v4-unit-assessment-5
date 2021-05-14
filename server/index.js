@@ -41,4 +41,4 @@ app.post('/api/auth/logout', userCtrl.logout);
 app.get('/api/posts', postCtrl.readPosts);
 app.post('/api/post', postCtrl.createPost);
 app.get('/api/post/:id', postCtrl.readPost);
-app.delete('/api/post/:id', postCtrl.deletePost)
+app.delete('/api/post/:id', postCtrl.deletePost);
